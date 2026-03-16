@@ -54,41 +54,6 @@ def generate_benign_samples(all_harmful_samples, prompt_column) -> list[str]:
 
     return all_benign_samples, new_harmful_samples
 
-
-def load_jbb_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key) -> tuple[dict, int]:
-    benign_set = load_dataset("JailbreakBench/JBB-Behaviors", "behaviors", split="benign")
-    harmful_set = load_dataset("JailbreakBench/JBB-Behaviors", "behaviors", split="harmful")
-
-    all_benign_samples = benign_set["Goal"]
-    all_harmful_samples = harmful_set["Goal"]
-    max_length = get_max_length(tokenizer, all_benign_samples, all_harmful_samples)
-
-    logger.info("Benign set size: %s", len(benign_set))
-    logger.info("Harmful set size: %s", len(harmful_set))
-    logger.info("The longest prompt is %s", max_length)
-
-    harmful_samples = {
-        category.replace("/", "_").replace(" ", "_").lower():
-        harmful_set.filter(lambda x: x["Category"] == category)["Goal"]
-        for category in set(harmful_set["Category"])
-    }
-
-    benign_samples = {
-        category.replace("/", "_").replace(" ", "_").lower():
-        benign_set.filter(lambda x: x["Category"] == category)["Goal"]
-        for category in set(benign_set["Category"])
-    }
-
-    samples = {
-        b_all_key: all_benign_samples,
-        b_cat_key: benign_samples,
-        h_all_key: all_harmful_samples,
-        h_cat_key: harmful_samples
-    }
-
-    return samples, max_length
-
-
 def load_harmeval_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key) -> tuple[dict, int]:
     prompt_column = "Question"
     harmful_set = load_dataset("SoftMINER-Group/HarmEval", split="train")
@@ -99,7 +64,7 @@ def load_harmeval_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key)
         for category in set(harmful_set["Topic"])
     }
 
-    benign_path = f"{DATASET_FOLDER}/harm_eval_benign.jsonl"
+    benign_path = f"{DATASET_FOLDER}/harm_direct_benign.jsonl"
 
     if os.path.exists(benign_path):
         benign_set = load_dataset("json", data_files=benign_path, split="train")
@@ -156,8 +121,8 @@ def load_wildjailbreak_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat
     harmful_set = full_eval_set.filter(lambda x: x["data_type"] in ["adversarial_harmful"])
     all_harmful_samples = harmful_set[prompt_column]
 
-    benign_path = f"{DATASET_FOLDER}/wildjailbreak_benign.jsonl"
-    harmful_path = f"{DATASET_FOLDER}/wildjailbreak_harmful.jsonl"
+    benign_path = f"{DATASET_FOLDER}/harm_context_benign.jsonl"
+    harmful_path = f"{DATASET_FOLDER}/harm_context_harmful.jsonl"
 
     if os.path.exists(benign_path):
         benign_set = load_dataset("json", data_files=benign_path, split="train")
