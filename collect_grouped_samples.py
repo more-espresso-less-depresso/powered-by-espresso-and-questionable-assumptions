@@ -29,11 +29,11 @@ torch.cuda.manual_seed_all(seed)
 np.random.seed(seed)
 random.seed(seed)
 
-MODEL_PATH = "small_mistral"
-DATASET_PATH = "wildjailbreak"
+MODEL_PATH = ""
+DATASET_PATH = ""
 GROUPED = True
-DATASET = load_wildjailbreak_dataset
-MODEL = small_mistral
+DATASET = None
+MODEL = None
 RESULT_FOLDER = f"results/{MODEL_PATH}/{DATASET_PATH}/{'grouped' if GROUPED else 'separated'}"
 TEMP_PATH = f"temp_activations_{MODEL_PATH}_{DATASET_PATH}_{"grouped" if GROUPED else "separated"}"
 

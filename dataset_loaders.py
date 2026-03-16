@@ -54,7 +54,7 @@ def generate_benign_samples(all_harmful_samples, prompt_column) -> list[str]:
 
     return all_benign_samples, new_harmful_samples
 
-def load_harmeval_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key) -> tuple[dict, int]:
+def load_harmdirect_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key) -> tuple[dict, int]:
     prompt_column = "Question"
     harmful_set = load_dataset("SoftMINER-Group/HarmEval", split="train")
 
@@ -107,7 +107,7 @@ def load_harmeval_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key)
     return samples, max_length_harmful
 
 
-def load_wildjailbreak_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key) -> tuple[dict, int]:
+def load_harmcontext_dataset(tokenizer, b_all_key, b_cat_key, h_all_key, h_cat_key) -> tuple[dict, int]:
     prompt_column = "adversarial"
 
     full_eval_set = load_dataset(

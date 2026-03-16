@@ -27,10 +27,10 @@ torch.cuda.manual_seed_all(seed)
 np.random.seed(seed)
 random.seed(seed)
 
-MODEL_PATH = "small_mistral"
-DATASET_PATH = "wildjailbreak"
-DATASET = load_wildjailbreak_dataset
-MODEL = small_mistral
+MODEL_PATH = ""
+DATASET_PATH = ""
+DATASET = None
+MODEL = None
 RESULT_FOLDER = f"results/{MODEL_PATH}/{DATASET_PATH}/all"
 TEMP_PATH = f"temp_activations_{MODEL_PATH}_{DATASET_PATH}_all"
 
